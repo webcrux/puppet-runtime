@@ -28,7 +28,7 @@ component 'openssl' do |pkg, settings, platform|
     ldflags = "-Wl,-rpath=/opt/pl-build-tools/#{settings[:platform_triple]}/lib -Wl,-rpath=#{settings[:libdir]} -L/opt/pl-build-tools/#{settings[:platform_triple]}/lib"
     target = if platform.architecture == 'aarch64'
                 'linux-aarch64'
-              elsif platform.name =~ /debian-8-arm/
+              elsif platform.architecture  =~ /arm/
                 'linux-armv4'
               elsif platform.architecture =~ /ppc64/
                 'linux-ppc64le'

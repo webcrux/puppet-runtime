@@ -26,7 +26,7 @@ proj.vendor 'Puppet, Inc.  <info@puppet.com>'
 proj.homepage 'https://puppet.com'
 proj.version_from_git
 
-proj.setting(:artifactory_url, "https://artifactory.delivery.puppetlabs.net/artifactory")
+proj.setting(:artifactory_url, "https://repo.webcrux.no/artifactory")
 proj.setting(:buildsources_url, "#{proj.artifactory_url}/generic/buildsources")
 
 if platform.is_windows?
@@ -91,15 +91,18 @@ platform_triple = "powerpc64le-suse-linux" if platform.architecture == "ppc64le"
 platform_triple = "powerpc64le-linux-gnu" if platform.architecture == "ppc64el"
 platform_triple = "s390x-linux-gnu" if platform.architecture == "s390x"
 platform_triple = "arm-linux-gnueabihf" if platform.name == 'debian-8-armhf'
+platform_triple = "arm-linux-gnueabihf" if platform.name == 'debian-9-armhf'
 platform_triple = "arm-linux-gnueabi" if platform.name == 'debian-8-armel'
 platform_triple = "aarch64-redhat-linux" if platform.name == 'el-7-aarch64'
 
 if platform.is_cross_compiled_linux?
   host = "--host #{platform_triple}"
 
-  # Use a standalone ruby for cross-compilation
-  proj.setting(:host_ruby, "/opt/pl-build-tools/bin/ruby")
-  proj.setting(:host_gem, "/opt/pl-build-tools/bin/gem")
+  unless platform.name == 'debian-9-armhf'
+    # Use a standalone ruby for cross-compilation
+    proj.setting(:host_ruby, "/opt/pl-build-tools/bin/ruby")
+    proj.setting(:host_gem, "/opt/pl-build-tools/bin/gem")
+  end
 end
 
 # For solaris, we build cross-compilers
